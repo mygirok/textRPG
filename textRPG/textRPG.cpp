@@ -31,6 +31,13 @@ enum JOB
 	JOB_END
 };
 
+enum BATTLE
+{
+	BATTLE_NONE,
+	BATTLE_ATTACK,
+	BATTLE_BACK
+};
+
 #define NAME_SIZE	32
 
 struct _tagInventory
@@ -100,7 +107,7 @@ int main()
 			continue;
 		}
 
-		else if (iJob <= JOB_NONE || iJob < JOB_END)
+		else if (iJob <= JOB_NONE || iJob >= JOB_END)
 			iJob = JOB_NONE;
 	}
 	
@@ -157,12 +164,12 @@ int main()
 	tMonsterArr[0].iArmorMax = 5;
 	tMonsterArr[0].iHP = 100;
 	tMonsterArr[0].iHPMax = 100;
-	tMonsterArr[0].iMP = 10;
-	tMonsterArr[0].iHPMax = 10;
+	tMonsterArr[0].iMP = 100;
+	tMonsterArr[0].iMPMax = 100;
 	tMonsterArr[0].iLevel = 1;
 	tMonsterArr[0].iExp = 1000;
 	tMonsterArr[0].iGoldMin = 500;
-	tMonsterArr[1].iGoldMax = 1500;
+	tMonsterArr[0].iGoldMax = 1500;
 
 	// Make Troll.
 	strcpy_s(tMonsterArr[1].strName, "Troll");
@@ -173,7 +180,7 @@ int main()
 	tMonsterArr[1].iHP = 2000;
 	tMonsterArr[1].iHPMax = 2000;
 	tMonsterArr[1].iMP = 100;
-	tMonsterArr[1].iHPMax = 100;
+	tMonsterArr[1].iMPMax = 100;
 	tMonsterArr[1].iLevel = 5;
 	tMonsterArr[1].iExp = 7000;
 	tMonsterArr[1].iGoldMin = 6000;
@@ -188,7 +195,7 @@ int main()
 	tMonsterArr[2].iHP = 30000;
 	tMonsterArr[2].iHPMax = 30000;
 	tMonsterArr[2].iMP = 20000;
-	tMonsterArr[2].iHPMax = 20000;
+	tMonsterArr[2].iMPMax = 20000;
 	tMonsterArr[2].iLevel = 10;
 	tMonsterArr[2].iExp = 30000;
 	tMonsterArr[2].iGoldMin = 20000;
@@ -246,6 +253,7 @@ int main()
 
 				while (true)
 				{
+					system("cls");
 					switch (iMenu)
 					{
 					case MT_EASY:
@@ -261,7 +269,7 @@ int main()
 
 					// Output player info.
 					cout << "======================== Player ========================" << endl;
-					cout << "Name : " << tPlayer.strJobName << "\tJob : " <<
+					cout << "Name : " << tPlayer.strName << "\tJob : " <<
 						tPlayer.strJobName << endl;
 					cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
 						tPlayer.iExp << endl;
@@ -270,19 +278,111 @@ int main()
 						" - " << tPlayer.iArmorMax << endl;
 					cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
 						"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
-					cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl;
+					cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl << endl;
 
 					// Monster info.
 					cout << "======================== Monster ========================" << endl;
-					cout << "Level : " << tMonster.iLevel << "\tExp : " <<
-						tMonster.iExp << endl;
-					cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+					cout << "Name : " << tMonster.strName << "\tLevel : " << 
+						tMonster.iLevel << endl;
+					cout << "Attack : " << tMonster.iAttackMin << " - " <<
 						tMonster.iAttackMax << "\tArmor : " << tMonster.iArmorMin <<
 						" - " << tMonster.iArmorMax << endl;
 					cout << "HP : " << tMonster.iHP << " / " << tMonster.iHPMax <<
 						"\tMP : " << tMonster.iMP << " / " << tMonster.iMPMax << endl;
-					cout << "Gold : " << tMonster.tInventory.iGold << " Gold" << endl;
+					cout << "Exp : " << tMonster.iExp << "\tGold : " <<
+						tMonster.iGoldMin << " - " << tMonster.iGoldMax << endl << endl;
 
+					cout << "1. Attack" << endl;
+					cout << "2. Run away" << endl;
+					cout << "Choose a menu : ";
+					cin >> iMenu;
+
+					if (cin.fail())
+					{
+						cin.clear();
+						cin.ignore(1024, '\n');
+						continue;
+					}
+
+					else if (iMenu == BATTLE_BACK)
+						break;
+
+					switch (iMenu)
+					 {
+					case BATTLE_ATTACK:
+					{
+						int iAttack = rand() % (tPlayer.iAttackMax - tPlayer.iAttackMin + 1) +
+							tPlayer.iAttackMin;
+						int iArmor = rand() % (tMonster.iArmorMax - tMonster.iArmorMin + 1) +
+							tMonster.iArmorMin;
+
+						int iDamage = iAttack - iArmor;
+
+						iDamage = iDamage < 1 ? 1 : iDamage;
+
+						// Monster HP after attacked.
+						tMonster.iHP -= iDamage;
+
+						cout << tPlayer.strName << " deals " << iDamage <<
+							" damage to " << tMonster.strName << endl;
+
+						// if Monster dies.
+						if (tMonster.iHP <= 0)
+						{
+							cout << tMonster.strName << " is dead." << endl;
+
+							tPlayer.iExp += tMonster.iExp;
+							int iGold = (rand() % (tMonster.iGoldMax = tMonster.iGoldMin + 1) +
+								tMonster.iGoldMin);
+							tPlayer.tInventory.iGold += iGold;
+
+							cout << "You gained " << tMonster.iExp << " EXP" << endl;
+							cout << "You gained " << iGold << " Gold" << endl;
+
+							tMonster.iHP = tMonster.iHPMax;
+							tMonster.iMP = tMonster.iMPMax;
+							system("pause");
+							break;
+						}
+
+						// Monster attack player.
+						iAttack = rand() % (tMonster.iAttackMax - tMonster.iAttackMin + 1) +
+							tMonster.iAttackMin;
+						iArmor = rand() % (tPlayer.iArmorMax - tPlayer.iArmorMin + 1) +
+							tPlayer.iArmorMin;
+
+						iDamage = iAttack - iArmor;
+						iDamage = iDamage < 1 ? 1 : iDamage;
+
+
+						// Plyaer HP after attacked.
+						tPlayer.iHP -= iDamage;
+						cout << tMonster.strName << " deals " << iDamage <<
+							" damage to " << tPlayer.strName << endl;
+
+
+						// if player dies.
+						if (tPlayer.iHP <= 0)
+						{
+							cout << tPlayer.strName << " is dead." << endl;
+
+							int iExp = tPlayer.iExp * 0.1f;
+							int iGold = tPlayer.tInventory.iGold * 0.1f;
+
+							tPlayer.iExp -= iExp;
+							tPlayer.tInventory.iGold -= iGold;
+
+							cout << "You lost " << tMonster.iExp << " EXP" << endl;
+							cout << "You lost " << iGold << " Gold" << endl;
+
+							tPlayer.iHP = tPlayer.iHPMax;
+							tPlayer.iMP = tPlayer.iMPMax;
+
+						}
+						system("pause");
+					}
+					break;
+					}
 				}
 			}
 			break;
