@@ -33,6 +33,11 @@ enum JOB
 
 #define NAME_SIZE	32
 
+struct _tagInventory
+{
+	int	iGold;
+};
+
 struct _tagPlayer
 {
 	char	strName[NAME_SIZE];
@@ -48,6 +53,7 @@ struct _tagPlayer
 	int		iMPMax;
 	int		iExp;
 	int		iLevel;
+	_tagInventory	tInventory;
 };
 
 struct _tagMonster
@@ -101,6 +107,7 @@ int main()
 	tPlayer.iLevel = 1;
 	tPlayer.iExp = 0;
 	tPlayer.eJob = (JOB)iJob;
+	tPlayer.tInventory.iGold = 10000;
 
 	switch (tPlayer.eJob)
 	{
@@ -253,6 +260,29 @@ int main()
 					}
 
 					// Output player info.
+					cout << "======================== Player ========================" << endl;
+					cout << "Name : " << tPlayer.strJobName << "\tJob : " <<
+						tPlayer.strJobName << endl;
+					cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
+						tPlayer.iExp << endl;
+					cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+						tPlayer.iAttackMax << "\tArmor : " << tPlayer.iArmorMin <<
+						" - " << tPlayer.iArmorMax << endl;
+					cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
+						"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
+					cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl;
+
+					// Monster info.
+					cout << "======================== Monster ========================" << endl;
+					cout << "Level : " << tMonster.iLevel << "\tExp : " <<
+						tMonster.iExp << endl;
+					cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+						tMonster.iAttackMax << "\tArmor : " << tMonster.iArmorMin <<
+						" - " << tMonster.iArmorMax << endl;
+					cout << "HP : " << tMonster.iHP << " / " << tMonster.iHPMax <<
+						"\tMP : " << tMonster.iMP << " / " << tMonster.iMPMax << endl;
+					cout << "Gold : " << tMonster.tInventory.iGold << " Gold" << endl;
+
 				}
 			}
 			break;
