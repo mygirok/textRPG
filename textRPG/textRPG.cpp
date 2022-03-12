@@ -38,11 +38,45 @@ enum BATTLE
 	BATTLE_BACK
 };
 
+enum ITEM_TYPE
+{
+	IT_NONE,
+	IT_WEAPON,
+	IT_ARMOR,
+	IT_BACK 
+};
+
+enum STORE_MENU
+{
+	SM_NONE,
+	SM_WEAPON,
+	SM_ARMOR,
+	SM_BACK
+};
+
 #define NAME_SIZE	32
+#define ITEM_DESC_LENGTH	512
+#define INVENTORY_MAX		20
+#define STORE_WEAPON_MAX	3
+#define STORE_ARMOR_MAX		3
+
+struct _tagItem
+{
+	char	strName[NAME_SIZE];
+	char	strTypeName[NAME_SIZE];
+	ITEM_TYPE	eType;
+	int		iMIn;
+	int		iMax;
+	int		iPrice;
+	int		iSell;
+	char	strDesc[ITEM_DESC_LENGTH];
+};
 
 struct _tagInventory
 {
-	int	iGold;
+	_tagItem	tItem[INVENTORY_MAX];
+	int			iItemCount;
+	int			iGold;
 };
 
 struct _tagPlayer
@@ -200,6 +234,13 @@ int main()
 	tMonsterArr[2].iExp = 30000;
 	tMonsterArr[2].iGoldMin = 20000;
 	tMonsterArr[2].iGoldMax = 50000;
+	
+
+	// list of items for sale
+	_tagItem	tStoreWeapon[STORE_WEAPON_MAX] = {};
+	_tagItem	tStoreArmor[STORE_ARMOR_MAX] = {};
+	
+
 
 	while (true)
 	{
@@ -387,6 +428,42 @@ int main()
 			}
 			break;
 		case MM_STORE:
+			while (true)
+			{
+				system("cls");
+				cout << "********************** Store ***********************" << endl;
+				cout << "1. Weapon store" << endl;
+				cout << "2. Armor store" << endl;
+				cout << "3. Back" << endl;
+				cout << "Choose a store : ";
+				cin >> iMenu;
+
+				if (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(1024, '\n');
+					continue;
+				}
+
+				else if (iMenu == SM_BACK)
+					break;
+
+				switch (iMenu)
+				{
+				case SM_WEAPON:
+					while (true)
+					{
+						system("cls");
+						cout << "********************** Weapon Store ***********************" << endl;
+
+						// Weapon list
+					}
+					break;
+				case SM_ARMOR:
+					break;
+
+				}
+			}
 			break;
 		case MM_INVETORY:
 			break;
