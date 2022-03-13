@@ -457,8 +457,45 @@ int main()
 						cout << "********************** Weapon Store ***********************" << endl;
 
 						// Weapon list
+						for (int i = 0; i < STORE_WEAPON_MAX; ++i)
+						{
+							cout << i + 1 << "Name : " << tStoreWeapon[i].strName <<
+								"\tType : " << tStoreWeapon[i].strTypeName << endl;
+							cout << "Attack : " << tStoreWeapon[i].iMIn << "-" <<
+								tStoreWeapon[i].iMax << endl;
+							cout << "Buy : " << tStoreWeapon[i].iPrice <<
+								"\tSell : " << tStoreWeapon[i].iSell << endl;
+							cout << "Desc : " << tStoreWeapon[i].strDesc << endl << endl;
+						}
+
+						cout << STORE_WEAPON_MAX + 1 << ". Back" << endl;
+						cout << "Holding Gold : " << tPlayer.tInventory.iGold << " Gold" << endl;
+						cout << "Remaining space : " << INVENTORY_MAX - tPlayer.tInventory.iItemCount << endl;
+						cout << "Choose a item : ";
+						cin >> iMenu;
+
+						if (cin.fail())
+						{
+							cin.clear();
+							cin.ignore(1024, '\n');
+							continue;
+						}
+
+						else if (iMenu == STORE_WEAPON_MAX + 1)
+							break;
+
+						else if (iMenu < 1 || iMenu > STORE_WEAPON_MAX + 1)
+						{
+							cout << "Wrong item." << endl;
+							system("pause");
+							continue;
+						}
 					}
 					break;
+
+					// Check the inventory space
+
+
 				case SM_ARMOR:
 					break;
 
