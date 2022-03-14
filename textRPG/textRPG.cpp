@@ -9,7 +9,7 @@ enum MAIN_MENU
 	MM_NONE,
 	MM_MAP,
 	MM_STORE,
-	MM_INVETORY,
+	MM_INVENTORY,
 	MM_EXIT
 };
 
@@ -65,7 +65,7 @@ struct _tagItem
 	char	strName[NAME_SIZE];
 	char	strTypeName[NAME_SIZE];
 	ITEM_TYPE	eType;
-	int		iMIn;
+	int		iMin;
 	int		iMax;
 	int		iPrice;
 	int		iSell;
@@ -240,6 +240,61 @@ int main()
 	_tagItem	tStoreWeapon[STORE_WEAPON_MAX] = {};
 	_tagItem	tStoreArmor[STORE_ARMOR_MAX] = {};
 	
+	// Weapon info
+	strcpy_s(tStoreWeapon[0].strName, "Wooden sword");
+	strcpy_s(tStoreWeapon[0].strTypeName, "Weapon");
+	strcpy_s(tStoreWeapon[0].strDesc, "Basic sword.");
+	tStoreWeapon[0].eType = IT_WEAPON;
+	tStoreWeapon[0].iMin = 5;
+	tStoreWeapon[0].iMax = 10;
+	tStoreWeapon[0].iPrice = 1000;
+	tStoreWeapon[0].iSell = 500;
+
+	strcpy_s(tStoreWeapon[1].strName, "Longbow");
+	strcpy_s(tStoreWeapon[1].strTypeName, "Weapon");
+	strcpy_s(tStoreWeapon[1].strDesc, "Long range attack possible");
+	tStoreWeapon[1].eType = IT_WEAPON;
+	tStoreWeapon[1].iMin = 20;
+	tStoreWeapon[1].iMax = 40;
+	tStoreWeapon[1].iPrice = 7000;
+	tStoreWeapon[1].iSell = 3500;
+
+	strcpy_s(tStoreWeapon[2].strName, "Magic wand");
+	strcpy_s(tStoreWeapon[2].strTypeName, "Weapon");
+	strcpy_s(tStoreWeapon[2].strDesc, "Wooden wand");
+	tStoreWeapon[2].eType = IT_WEAPON;
+	tStoreWeapon[2].iMin = 90;
+	tStoreWeapon[2].iMax = 150;
+	tStoreWeapon[2].iPrice = 30000;
+	tStoreWeapon[2].iSell = 15000;
+
+	// ================ 방어구정보 설정 =================
+	strcpy_s(tStoreArmor[0].strName, "Cloth armor");
+	strcpy_s(tStoreArmor[0].strTypeName, "Armor");
+	strcpy_s(tStoreArmor[0].strDesc, "Armor made of cloth.");
+	tStoreArmor[0].eType = IT_ARMOR;
+	tStoreArmor[0].iMin = 2;
+	tStoreArmor[0].iMax = 5;
+	tStoreArmor[0].iPrice = 1000;
+	tStoreArmor[0].iSell = 500;
+
+	strcpy_s(tStoreArmor[1].strName, "Leather armor");
+	strcpy_s(tStoreArmor[1].strTypeName, "Armor");
+	strcpy_s(tStoreArmor[1].strDesc, "Armor made of animal leather.");
+	tStoreArmor[1].eType = IT_ARMOR;
+	tStoreArmor[1].iMin = 10;
+	tStoreArmor[1].iMax = 20;
+	tStoreArmor[1].iPrice = 7000;
+	tStoreArmor[1].iSell = 3500;
+
+	strcpy_s(tStoreArmor[2].strName, "Steel armor");
+	strcpy_s(tStoreArmor[2].strTypeName, "Armor");
+	strcpy_s(tStoreArmor[2].strDesc, "Armor made of steel");
+	tStoreArmor[2].eType = IT_ARMOR;
+	tStoreArmor[2].iMin = 70;
+	tStoreArmor[2].iMax = 90;
+	tStoreArmor[2].iPrice = 30000;
+	tStoreArmor[2].iSell = 15000;
 
 
 	while (true)
@@ -459,9 +514,9 @@ int main()
 						// Weapon list
 						for (int i = 0; i < STORE_WEAPON_MAX; ++i)
 						{
-							cout << i + 1 << "Name : " << tStoreWeapon[i].strName <<
+							cout << i + 1 << ". Name : " << tStoreWeapon[i].strName <<
 								"\tType : " << tStoreWeapon[i].strTypeName << endl;
-							cout << "Attack : " << tStoreWeapon[i].iMIn << "-" <<
+							cout << "Attack : " << tStoreWeapon[i].iMin << "-" <<
 								tStoreWeapon[i].iMax << endl;
 							cout << "Buy : " << tStoreWeapon[i].iPrice <<
 								"\tSell : " << tStoreWeapon[i].iSell << endl;
@@ -497,7 +552,7 @@ int main()
 						// Check the inventory space
 						if (tPlayer.tInventory.iItemCount == INVENTORY_MAX)
 						{
-							cout << "Invebtorey is full" << endl;
+							cout << "Inventory is full" << endl;
 							system("pause");
 							continue;
 						}
@@ -528,7 +583,33 @@ int main()
 				}
 			}
 			break;
-		case MM_INVETORY:
+		case MM_INVENTORY:
+			system("cls");
+			cout << "********************** Inventory ***********************" << endl;
+			cout << "Name : " << tPlayer.strName << "\tJob : " <<
+				tPlayer.strJobName << endl;
+			cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
+				tPlayer.iExp << endl;
+			cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+				tPlayer.iAttackMax << "\tArmor : " << tPlayer.iArmorMin <<
+				" - " << tPlayer.iArmorMax << endl;
+			cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
+				"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
+			cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl << endl;
+
+			for (int i = 0; i < tPlayer.tInventory.iItemCount; ++i)
+			{
+				cout << i + 1 << ". Name : " << tPlayer.tInventory.tItem[i].strName <<
+					"\tType : " << tPlayer.tInventory.tItem[i].strTypeName << endl;
+				cout << "Attack : " << tPlayer.tInventory.tItem[i].iMin << "-" <<
+					tPlayer.tInventory.tItem[i].iMax << endl;
+				cout << "Buy : " << tPlayer.tInventory.tItem[i].iPrice <<
+					"\tSell : " << tPlayer.tInventory.tItem[i].iSell << endl;
+				cout << "Desc : " << tPlayer.tInventory.tItem[i].strDesc << endl << endl;
+
+			}
+
+			system("pause");
 			break;
 		default:
 			cout << "Wrong number. check please" << endl;
