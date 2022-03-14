@@ -490,11 +490,19 @@ int main()
 							system("pause");
 							continue;
 						}
+ 
+						// list index
+						int iWeaponIdex = iMenu - 1;
+
+						// Check the inventory space
+						if (tPlayer.tInventory.iItemCount == INVENTORY_MAX)
+						{
+							cout << "Invebtorey is full" << endl;
+							system("pause");
+							continue;
+						}
 					}
 					break;
-
-					// Check the inventory space
-
 
 				case SM_ARMOR:
 					break;
