@@ -501,6 +501,24 @@ int main()
 							system("pause");
 							continue;
 						}
+
+						// Check Gold
+						else if (tPlayer.tInventory.iGold < tStoreWeapon[iWeaponIdex].iPrice)
+						{
+							cout << "Don't have enough Gold." << endl;
+							system("pause");
+							continue;
+						}
+
+						tPlayer.tInventory.tItem[tPlayer.tInventory.iItemCount] =
+							tStoreWeapon[iWeaponIdex];
+						++tPlayer.tInventory.iItemCount;
+
+						tPlayer.tInventory.iGold -= tStoreWeapon[iWeaponIdex].iPrice;
+
+						cout << "Bought	" << tStoreWeapon[iWeaponIdex].strName << endl;
+						system("pause");
+
 					}
 					break;
 
