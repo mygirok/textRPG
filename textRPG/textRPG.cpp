@@ -43,7 +43,7 @@ enum ITEM_TYPE
 	IT_NONE,
 	IT_WEAPON,
 	IT_ARMOR,
-	IT_BACK 
+	IT_BACK
 };
 
 enum STORE_MENU
@@ -144,7 +144,7 @@ int main()
 		else if (iJob <= JOB_NONE || iJob >= JOB_END)
 			iJob = JOB_NONE;
 	}
-	
+
 	tPlayer.iLevel = 1;
 	tPlayer.iExp = 0;
 	tPlayer.eJob = (JOB)iJob;
@@ -186,7 +186,7 @@ int main()
 		tPlayer.iMPMax = 300;
 		break;
 	}
-	
+
 	// Make monster
 	_tagMonster tMonsterArr[MT_BACK - 1] = {};
 
@@ -234,12 +234,12 @@ int main()
 	tMonsterArr[2].iExp = 30000;
 	tMonsterArr[2].iGoldMin = 20000;
 	tMonsterArr[2].iGoldMax = 50000;
-	
+
 
 	// list of items for sale
 	_tagItem	tStoreWeapon[STORE_WEAPON_MAX] = {};
 	_tagItem	tStoreArmor[STORE_ARMOR_MAX] = {};
-	
+
 	// Weapon info
 	strcpy_s(tStoreWeapon[0].strName, "Wooden sword");
 	strcpy_s(tStoreWeapon[0].strTypeName, "Weapon");
@@ -268,7 +268,7 @@ int main()
 	tStoreWeapon[2].iPrice = 30000;
 	tStoreWeapon[2].iSell = 15000;
 
-	// ================ 방어구정보 설정 =================
+	// ================ Armor info =================
 	strcpy_s(tStoreArmor[0].strName, "Cloth armor");
 	strcpy_s(tStoreArmor[0].strTypeName, "Armor");
 	strcpy_s(tStoreArmor[0].strDesc, "Armor made of cloth.");
@@ -317,7 +317,7 @@ int main()
 		}
 
 		if (iMenu == MM_EXIT)
-			break; 
+			break;
 
 		switch (iMenu)
 		{
@@ -343,7 +343,7 @@ int main()
 
 				if (iMenu == MT_BACK)
 					break;
-				
+
 				// Menu number - 1 = monster index.
 				_tagMonster tMonster = tMonsterArr[iMenu - 1];
 
@@ -378,7 +378,7 @@ int main()
 
 					// Monster info.
 					cout << "======================== Monster ========================" << endl;
-					cout << "Name : " << tMonster.strName << "\tLevel : " << 
+					cout << "Name : " << tMonster.strName << "\tLevel : " <<
 						tMonster.iLevel << endl;
 					cout << "Attack : " << tMonster.iAttackMin << " - " <<
 						tMonster.iAttackMax << "\tArmor : " << tMonster.iArmorMin <<
@@ -404,7 +404,7 @@ int main()
 						break;
 
 					switch (iMenu)
-					 {
+					{
 					case BATTLE_ATTACK:
 					{
 						int iAttack = rand() % (tPlayer.iAttackMax - tPlayer.iAttackMin + 1) +
@@ -545,7 +545,7 @@ int main()
 							system("pause");
 							continue;
 						}
- 
+
 						// list index
 						int iWeaponIdex = iMenu - 1;
 
@@ -578,6 +578,75 @@ int main()
 					break;
 
 				case SM_ARMOR:
+					while (true)
+					{
+						system("cls");
+						cout << "********************** Armor Store ***********************" << endl;
+
+						// Weapon list
+						for (int i = 0; i < STORE_ARMOR_MAX; ++i)
+						{
+							cout << i + 1 << ". Name : " << tStoreArmor[i].strName <<
+								"\tType : " << tStoreArmor[i].strTypeName << endl;
+							cout << "Attack : " << tStoreArmor[i].iMin << "-" <<
+								tStoreArmor[i].iMax << endl;
+							cout << "Buy : " << tStoreArmor[i].iPrice <<
+								"\tSell : " << tStoreArmor[i].iSell << endl;
+							cout << "Desc : " << tStoreArmor[i].strDesc << endl << endl;
+						}
+
+						cout << STORE_ARMOR_MAX + 1 << ". Back" << endl;
+						cout << "Holding Gold : " << tPlayer.tInventory.iGold << " Gold" << endl;
+						cout << "Remaining space : " << INVENTORY_MAX - tPlayer.tInventory.iItemCount << endl;
+						cout << "Choose a item : ";
+						cin >> iMenu;
+
+						if (cin.fail())
+						{
+							cin.clear();
+							cin.ignore(1024, '\n');
+							continue;
+						}
+
+						else if (iMenu == STORE_ARMOR_MAX + 1)
+							break;
+
+						else if (iMenu < 1 || iMenu > STORE_ARMOR_MAX + 1)
+						{
+							cout << "Wrong item." << endl;
+							system("pause");
+							continue;
+						}
+
+						// list index
+						int iArmorIdex = iMenu - 1;
+
+						// Check the inventory space
+						if (tPlayer.tInventory.iItemCount == INVENTORY_MAX)
+						{
+							cout << "Inventory is full" << endl;
+							system("pause");
+							continue;
+						}
+
+						// Check Gold
+						else if (tPlayer.tInventory.iGold < tStoreArmor[iArmorIdex].iPrice)
+						{
+							cout << "Don't have enough Gold." << endl;
+							system("pause");
+							continue;
+						}
+
+						tPlayer.tInventory.tItem[tPlayer.tInventory.iItemCount] =
+							tStoreArmor[iArmorIdex];
+						++tPlayer.tInventory.iItemCount;
+
+						tPlayer.tInventory.iGold -= tStoreArmor[iArmorIdex].iPrice;
+
+						cout << "Bought	" << tStoreArmor[iArmorIdex].strName << endl;
+						system("pause");
+
+					}
 					break;
 
 				}
