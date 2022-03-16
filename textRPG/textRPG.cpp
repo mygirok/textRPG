@@ -54,6 +54,13 @@ enum STORE_MENU
 	SM_BACK
 };
 
+enum EQUIP
+{
+	EQ_WEAPON,
+	EQ_ARMOR,
+	EQ_MAX
+};
+
 #define NAME_SIZE	32
 #define ITEM_DESC_LENGTH	512
 #define INVENTORY_MAX		20
@@ -94,6 +101,8 @@ struct _tagPlayer
 	int		iMPMax;
 	int		iExp;
 	int		iLevel;
+	_tagItem	tEquip[EQ_MAX];
+	bool		bEquip[EQ_MAX];
 	_tagInventory	tInventory;
 };
 
@@ -653,32 +662,97 @@ int main()
 			}
 			break;
 		case MM_INVENTORY:
-			system("cls");
-			cout << "********************** Inventory ***********************" << endl;
-			cout << "Name : " << tPlayer.strName << "\tJob : " <<
-				tPlayer.strJobName << endl;
-			cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
-				tPlayer.iExp << endl;
-			cout << "Attack : " << tPlayer.iAttackMin << " - " <<
-				tPlayer.iAttackMax << "\tArmor : " << tPlayer.iArmorMin <<
-				" - " << tPlayer.iArmorMax << endl;
-			cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
-				"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
-			cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl << endl;
-
-			for (int i = 0; i < tPlayer.tInventory.iItemCount; ++i)
+			while (true)
 			{
-				cout << i + 1 << ". Name : " << tPlayer.tInventory.tItem[i].strName <<
-					"\tType : " << tPlayer.tInventory.tItem[i].strTypeName << endl;
-				cout << "Attack : " << tPlayer.tInventory.tItem[i].iMin << "-" <<
-					tPlayer.tInventory.tItem[i].iMax << endl;
-				cout << "Buy : " << tPlayer.tInventory.tItem[i].iPrice <<
-					"\tSell : " << tPlayer.tInventory.tItem[i].iSell << endl;
-				cout << "Desc : " << tPlayer.tInventory.tItem[i].strDesc << endl << endl;
 
+				system("cls");
+				cout << "********************** Inventory ***********************" << endl;
+				cout << "Name : " << tPlayer.strName << "\tJob : " <<
+					tPlayer.strJobName << endl;
+				cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
+					tPlayer.iExp << endl;
+				cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+					tPlayer.iAttackMax << "\tArmor : " << tPlayer.iArmorMin <<
+					" - " << tPlayer.iArmorMax << endl;
+				cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
+					"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
+				cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl << endl;
+
+				for (int i = 0; i < tPlayer.tInventory.iItemCount; ++i)
+				{
+					cout << i + 1 << ". Name : " << tPlayer.tInventory.tItem[i].strName <<
+						"\tType : " << tPlayer.tInventory.tItem[i].strTypeName << endl;
+					cout << "Attack : " << tPlayer.tInventory.tItem[i].iMin << "-" <<
+						tPlayer.tInventory.tItem[i].iMax << endl;
+					cout << "Buy : " << tPlayer.tInventory.tItem[i].iPrice <<
+						"\tSell : " << tPlayer.tInventory.tItem[i].iSell << endl;
+					cout << "Desc : " << tPlayer.tInventory.tItem[i].strDesc << endl << endl;
+
+				}
+
+				cout << tPlayer.tInventory.iItemCount + 1 << ". Back" << endl;
+				cout << "Choose item to equip : ";
+				cin >> iMenu;
+
+				if (cin.fail())
+				{
+					cin.clear();
+					cin.ignore(1024, '\n');
+					continue;
+				}
+
+				else if (iMenu == tPlayer.tInventory.iItemCount + 1)
+					break;
+
+				else if (iMenu < 1 || iMenu > tPlayer.tInventory.iItemCount + 1)
+				{
+					cout << "Worng number. check please." << endl;
+					system("pause");
+					continue;
+				}
+				
+				// Item index
+				int idx = iMenu - 1;
+
+				// Equip item
+				EQUIP	eq;
+
+				switch (tPlayer.tInventory.tItem[idx].eType)
+				{
+				case IT_WEAPON:
+					eq = EQ_WEAPON;
+					break;
+				case IT_ARMOR:
+					eq = EQ_ARMOR;
+					break;
+				}
+
+				// If item is already equipped, swap with selected item.
+				if (tPlayer.bEquip[eq] == true)
+				{
+					_tagItem	tSwap = tPlayer.tEquip[eq];
+					tPlayer.tEquip[eq] = tPlayer.tInventory.tItem[idx];
+					tPlayer.tInventory.tItem[idx] = tSwap;
+				}
+
+				// if item is not equipped.
+				else
+				{
+					tPlayer.tEquip[eq] = tPlayer.tInventory.tItem[idx];
+
+					for (int i = idx; tPlayer.tInventory.iItemCount - 1; ++i)
+					{
+						tPlayer.tInventory.tItem[i] = tPlayer.tInventory.tItem[i + 1];
+					}
+
+					--tPlayer.tInventory.iItemCount;
+
+					tPlayer.bEquip[eq] = true;
+				}
+
+				cout << "Equipped with " << tPlayer.tEquip[eq].strName << endl;
+				system("pause");
 			}
-
-			system("pause");
 			break;
 		default:
 			cout << "Wrong number. check please" << endl;
