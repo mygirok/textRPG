@@ -378,11 +378,56 @@ int main()
 						tPlayer.strJobName << endl;
 					cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
 						tPlayer.iExp << endl;
+
+					/*
 					cout << "Attack : " << tPlayer.iAttackMin << " - " <<
 						tPlayer.iAttackMax << "\tArmor : " << tPlayer.iArmorMin <<
 						" - " << tPlayer.iArmorMax << endl;
+					*/
+ 
+					// Add item attack to player. 
+					if (tPlayer.bEquip[EQ_WEAPON] == true)
+					{
+						cout << "Attack : " << tPlayer.iAttackMin << " + " <<
+							tPlayer.tEquip[EQ_WEAPON].iMin << " - " <<
+							tPlayer.iAttackMax << " + " << tPlayer.tEquip[EQ_WEAPON].iMax;
+					}
+					else
+					{
+
+						cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+							tPlayer.iAttackMax;
+					}
+
+					// Add item armor to player. 
+					if (tPlayer.bEquip[EQ_ARMOR] == true)
+					{
+						cout << "\tArmor : " << tPlayer.iArmorMin << " + " <<
+							tPlayer.tEquip[EQ_ARMOR].iMin << " - " <<
+							tPlayer.iArmorMax << " + " << tPlayer.tEquip[EQ_ARMOR].iMax << endl;
+					}
+					else
+					{
+
+						cout << "\tArmor : " << tPlayer.iArmorMin << " - " <<
+							tPlayer.iArmorMax << endl;
+					}
+
 					cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
 						"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
+
+					if (tPlayer.bEquip[EQ_WEAPON])
+						cout << "Equip Weapon : " << tPlayer.tEquip[EQ_WEAPON].strName;
+
+					else
+						cout << "Equip Weapon : None";
+
+					if (tPlayer.bEquip[EQ_ARMOR])
+						cout << "\tEquip Armor : " << tPlayer.tEquip[EQ_ARMOR].strName << endl;
+
+					else
+						cout << "\tEquip Armor : None" << endl;
+
 					cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl << endl;
 
 					// Monster info.
@@ -671,11 +716,50 @@ int main()
 					tPlayer.strJobName << endl;
 				cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
 					tPlayer.iExp << endl;
-				cout << "Attack : " << tPlayer.iAttackMin << " - " <<
-					tPlayer.iAttackMax << "\tArmor : " << tPlayer.iArmorMin <<
-					" - " << tPlayer.iArmorMax << endl;
+
+				// Add item attack to player.
+				if (tPlayer.bEquip[EQ_WEAPON] == true)
+				{
+					cout << "Attack : " << tPlayer.iAttackMin << " + " <<
+						tPlayer.tEquip[EQ_WEAPON].iMin << " - " <<
+						tPlayer.iAttackMax << " + " << tPlayer.tEquip[EQ_WEAPON].iMax;
+				}
+				else
+				{
+
+					cout << "Attack : " << tPlayer.iAttackMin << " - " <<
+						tPlayer.iAttackMax;
+				}
+
+				// Add item armor to player. 
+				if (tPlayer.bEquip[EQ_ARMOR] == true)
+				{
+					cout << "\tArmor : " << tPlayer.iArmorMin << " + " <<
+						tPlayer.tEquip[EQ_ARMOR].iMin << " - " <<
+						tPlayer.iArmorMax << " + " << tPlayer.tEquip[EQ_ARMOR].iMax << endl;
+				}
+				else
+				{
+
+					cout << "\tArmor : " << tPlayer.iArmorMin << " - " <<
+						tPlayer.iArmorMax << endl;
+				}
+
 				cout << "HP : " << tPlayer.iHP << " / " << tPlayer.iHPMax <<
 					"\tMP : " << tPlayer.iMP << " / " << tPlayer.iMPMax << endl;
+
+				if (tPlayer.bEquip[EQ_WEAPON])
+					cout << "Equip Weapon : " << tPlayer.tEquip[EQ_WEAPON].strName;
+
+				else
+					cout << "Equip Weapon : None";
+
+				if (tPlayer.bEquip[EQ_ARMOR])
+					cout << "\tEquip Armor : " << tPlayer.tEquip[EQ_ARMOR].strName << endl;
+
+				else
+					cout << "\tEquip Armor : None" << endl;
+
 				cout << "Gold : " << tPlayer.tInventory.iGold << " Gold" << endl << endl;
 
 				for (int i = 0; i < tPlayer.tInventory.iItemCount; ++i)
@@ -710,7 +794,7 @@ int main()
 					system("pause");
 					continue;
 				}
-				
+
 				// Item index
 				int idx = iMenu - 1;
 
