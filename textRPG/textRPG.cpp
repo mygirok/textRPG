@@ -461,8 +461,17 @@ int main()
 					{
 					case BATTLE_ATTACK:
 					{
-						int iAttack = rand() % (tPlayer.iAttackMax - tPlayer.iAttackMin + 1) +
-							tPlayer.iAttackMin;
+						int iAttackMin = tPlayer.iAttackMin;
+						int iAttackMax = tPlayer.iAttackMax;
+
+						if (tPlayer.bEquip[EQ_WEAPON])
+						{
+							iAttackMin += tPlayer.tEquip[EQ_WEAPON].iMin;
+							iAttackMax += tPlayer.tEquip[EQ_WEAPON].iMax;
+						}
+
+						int iAttack = rand() % (iAttackMax - iAttackMin + 1) +
+							iAttackMin;
 						int iArmor = rand() % (tMonster.iArmorMax - tMonster.iArmorMin + 1) +
 							tMonster.iArmorMin;
 
@@ -496,10 +505,20 @@ int main()
 						}
 
 						// Monster attack player.
-						iAttack = rand() % (tMonster.iAttackMax - tMonster.iAttackMin + 1) +
+						iAttack = rand() % (iAttackMax - iAttackMin + 1) +
 							tMonster.iAttackMin;
+
+						int iArmorMin = tPlayer.iArmorMin;
+						int iArmorMax = tPlayer.iArmorMax;
+
+						if (tPlayer.bEquip[EQ_ARMOR])
+						{
+							iArmorMin += tPlayer.tEquip[EQ_ARMOR].iMin;
+							iArmorMax += tPlayer.tEquip[EQ_ARMOR].iMax;
+						}
+
 						iArmor = rand() % (tPlayer.iArmorMax - tPlayer.iArmorMin + 1) +
-							tPlayer.iArmorMin;
+							iArmorMin;
 
 						iDamage = iAttack - iArmor;
 						iDamage = iDamage < 1 ? 1 : iDamage;
