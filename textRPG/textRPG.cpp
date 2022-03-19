@@ -66,6 +66,7 @@ enum EQUIP
 #define INVENTORY_MAX		20
 #define STORE_WEAPON_MAX	3
 #define STORE_ARMOR_MAX		3
+#define LEVEL_MAX			10
 
 struct _tagItem
 {
@@ -126,6 +127,9 @@ struct _tagMonster
 int main()
 {
 	srand((unsigned int)time(0));
+
+	// Exp for level up 
+	const int iLevelUpExp[LEVEL_MAX] = {4000, 10000, 20000, 35000, 50000, 70000, 100000, 150000, 200000, 400000};
 
 	// Make player
 	_tagPlayer	tPlayer = {};
@@ -500,6 +504,20 @@ int main()
 
 							tMonster.iHP = tMonster.iHPMax;
 							tMonster.iMP = tMonster.iMPMax;
+
+							// Level up check
+							if (tPlayer.iExp >= iLevelUpExp[tPlayer.iLevel - 1])
+							{
+								// Exp after level up
+								tPlayer.iExp -= iLevelUpExp[tPlayer.iLevel - 1];
+
+								// Level up
+								++tPlayer.iLevel;
+
+								cout << "Level Up" << endl;
+
+							}
+
 							system("pause");
 							break;
 						}
