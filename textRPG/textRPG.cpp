@@ -381,7 +381,7 @@ int main()
 					cout << "Name : " << tPlayer.strName << "\tJob : " <<
 						tPlayer.strJobName << endl;
 					cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
-						tPlayer.iExp << endl;
+						tPlayer.iExp << " / " << iLevelUpExp[tPlayer.iLevel - 1] << endl;
 
 					/*
 					cout << "Attack : " << tPlayer.iAttackMin << " - " <<
@@ -752,7 +752,7 @@ int main()
 				cout << "Name : " << tPlayer.strName << "\tJob : " <<
 					tPlayer.strJobName << endl;
 				cout << "Level : " << tPlayer.iLevel << "\tExp : " <<
-					tPlayer.iExp << endl;
+					tPlayer.iExp << " / " << iLevelUpExp[tPlayer.iLevel - 1] << endl;
 
 				// Add item attack to player.
 				if (tPlayer.bEquip[EQ_WEAPON] == true)
@@ -775,6 +775,7 @@ int main()
 						tPlayer.tEquip[EQ_ARMOR].iMin << " - " <<
 						tPlayer.iArmorMax << " + " << tPlayer.tEquip[EQ_ARMOR].iMax << endl;
 				}
+
 				else
 				{
 
@@ -861,7 +862,7 @@ int main()
 				{
 					tPlayer.tEquip[eq] = tPlayer.tInventory.tItem[idx];
 
-					for (int i = idx; tPlayer.tInventory.iItemCount - 1; ++i)
+					for (int i = idx; i < tPlayer.tInventory.iItemCount - 1; ++i)
 					{
 						tPlayer.tInventory.tItem[i] = tPlayer.tInventory.tItem[i + 1];
 					}
