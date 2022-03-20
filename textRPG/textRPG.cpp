@@ -523,7 +523,7 @@ int main()
 						}
 
 						// Monster attack player.
-						iAttack = rand() % (iAttackMax - iAttackMin + 1) +
+						iAttack = rand() % (tMonster.iAttackMax - tMonster.iAttackMin + 1) +
 							tMonster.iAttackMin;
 
 						int iArmorMin = tPlayer.iArmorMin;
@@ -674,7 +674,7 @@ int main()
 						system("cls");
 						cout << "********************** Armor Store ***********************" << endl;
 
-						// Weapon list
+						// Armor list
 						for (int i = 0; i < STORE_ARMOR_MAX; ++i)
 						{
 							cout << i + 1 << ". Name : " << tStoreArmor[i].strName <<
