@@ -600,7 +600,7 @@ int main()
 							iArmorMax += tPlayer.tEquip[EQ_ARMOR].iMax;
 						}
 
-						iArmor = rand() % (tPlayer.iArmorMax - tPlayer.iArmorMin + 1) +
+						iArmor = rand() % (iArmorMax - iArmorMin + 1) +
 							iArmorMin;
 
 						iDamage = iAttack - iArmor;
