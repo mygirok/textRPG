@@ -775,7 +775,7 @@ int main()
 						}
 
 						// list index
-						int iArmorIdex = iMenu - 1;
+						int iArmorIndex = iMenu - 1;
 
 						// Check the inventory space
 						if (tPlayer.tInventory.iItemCount == INVENTORY_MAX)
@@ -786,7 +786,7 @@ int main()
 						}
 
 						// Check Gold
-						else if (tPlayer.tInventory.iGold < tStoreArmor[iArmorIdex].iPrice)
+						else if (tPlayer.tInventory.iGold < tStoreArmor[iArmorIndex].iPrice)
 						{
 							cout << "Don't have enough Gold." << endl;
 							system("pause");
@@ -794,12 +794,12 @@ int main()
 						}
 
 						tPlayer.tInventory.tItem[tPlayer.tInventory.iItemCount] =
-							tStoreArmor[iArmorIdex];
+							tStoreArmor[iArmorIndex];
 						++tPlayer.tInventory.iItemCount;
 
-						tPlayer.tInventory.iGold -= tStoreArmor[iArmorIdex].iPrice;
+						tPlayer.tInventory.iGold -= tStoreArmor[iArmorIndex].iPrice;
 
-						cout << "Bought	" << tStoreArmor[iArmorIdex].strName << endl;
+						cout << "Bought	" << tStoreArmor[iArmorIndex].strName << endl;
 						system("pause");
 
 					}
